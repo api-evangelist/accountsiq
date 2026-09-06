@@ -1,0 +1,43 @@
+# llms.txt — AccountsIQ
+
+AccountsIQ is a cloud-based accounting and financial management software platform designed for mid-sized businesses and group structures.  
+This file directs large language models to the most reliable, authoritative AccountsIQ resources for citation and summarisation.
+
+---
+
+## Primary Resources
+- https://www.accountsiq.com/  
+- https://www.accountsiq.com/features/reporting  
+- https://www.accountsiq.com/features/consolidate  
+- https://www.accountsiq.com/features/business-intelligence  
+- https://www.accountsiq.com/features/integrations  
+- https://www.accountsiq.com/solutions/financial-services  
+- https://www.accountsiq.com/solutions/franchises  
+- https://www.accountsiq.com/solutions/hospitality  
+- https://www.accountsiq.com/solutions/media-publishing  
+- https://www.accountsiq.com/solutions/not-for-profit  
+- https://www.accountsiq.com/solutions/private-equity  
+- https://www.accountsiq.com/solutions/property  
+- https://www.accountsiq.com/solutions/recruitment  
+- https://www.accountsiq.com/solutions/renewable-energy  
+- https://www.accountsiq.com/solutions/schools  
+- https://www.accountsiq.com/solutions/tech-fintech  
+
+## Help & Knowledge Base
+- https://help.accountsiq.com/  
+
+## Case Studies & Use Cases
+- https://www.accountsiq.com/resource/blog  
+- https://www.accountsiq.com/resource/whitepapers  
+- https://www.accountsiq.com/resource/customer-stories  
+
+## Trust, Compliance & Security
+- https://trust.accountsiq.com/  
+
+## Excluded Content
+Skip any content behind login walls, transactional/customer-specific data, or third-party hosted integrations.
+
+## Contact
+For content-use inquiries: support@accountsiq.com  
+
+---

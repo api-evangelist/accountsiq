@@ -1,0 +1,277 @@
+generated: '2026-09-06'
+method: derived
+source: >-
+  wsdl/accountsiq-integration-2-0.wsdl (operation and type inventory) enriched from
+  https://accountsiq.github.io/API-Wiki/specifications.html,
+  https://accountsiq.github.io/API-Wiki/guidelines.html,
+  https://accountsiq.github.io/API-Wiki/troubleshooting.html and
+  https://accountsiq.github.io/API-Wiki/authentication1.html
+protocol:
+  style: SOAP 1.1
+  bindings:
+  - Integration_2_0Soap (SOAP 1.1)
+  - Integration_2_0Soap12 (SOAP 1.2)
+  transport: HTTPS
+  contract: WSDL 1.1, one file per version, identical across all four regions
+  language_neutral: true
+  client_generation: >-
+    The provider's documented integration path is proxy generation from the WSDL — Add Web
+    Reference / wsdl.exe for C# and VB.NET, wsdl2php for PHP. There is no distributed SDK
+    package because the contract IS the SDK.
+  source: https://accountsiq.github.io/API-Wiki/specifications.html
+auth:
+  style: >-
+    OAuth 2.0 client credentials on Integration 2.0 (token in the AiqSoapHeader alongside the
+    target Entity); Login session token on Integration 1.1 (token as first operation argument).
+  see: authentication/accountsiq-authentication.yml
+tenancy:
+  dimension: Entity
+  description: >-
+    Every 2.0 call is scoped to an AccountsIQ entity carried in AiqSoapHeader.Entity. On 1.1
+    the entity is the companyID passed to Login. Entities roll up to a customer (an accountancy
+    practice or franchisor); the API exposes entity-level data only and cannot read
+    customer/practice-level data.
+  discovery_operation: GetEntitiesByToken
+  source: https://accountsiq.github.io/API-Wiki/index.html
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  header: null
+  note: >-
+    AccountsIQ documents no replay-protection mechanism. There is no Idempotency-Key header,
+    no client-supplied request key, and no documented safe-retry semantics on any of the 219
+    operations. A retried PostInvoiceGetBackTransactionID will post a second invoice.
+    Two related but distinct mechanisms exist and must not be mistaken for idempotency:
+    (a) optimistic concurrency via RowVersionNumber, which protects an UPDATE against a
+    concurrent writer but does nothing for a duplicated CREATE; (b) the ExternalReference
+    field carried on invoices, orders and transactions, which is a caller-supplied correlation
+    key that the caller can read back with GetInvoicesByExternalReference,
+    GetOrdersByExternalReference, GetCreditNotesByExternalReference and
+    GetTransactionsByExternalReference. That read-back gives an integrator a way to BUILD
+    at-least-once safety themselves — check before posting — but AccountsIQ does not enforce
+    uniqueness on it and does not document it as a deduplication guarantee, so it is recorded
+    as a caller-side pattern and not as provider idempotency.
+  related_mechanisms:
+  - name: RowVersionNumber optimistic concurrency
+    scope: update operations on retrieved objects
+    error_code: OUTDATED_RECORD
+    source: https://accountsiq.github.io/API-Wiki/troubleshooting.html
+  - name: ExternalReference correlation key
+    scope:
+    - GetInvoicesByExternalReference
+    - GetOrdersByExternalReference
+    - GetCreditNotesByExternalReference
+    - GetTransactionsByExternalReference
+    enforced_unique: unknown
+    note: Caller-side deduplication pattern; not documented as a provider guarantee.
+reversibility:
+  grade: documented
+  note: >-
+    AccountsIQ ships real reversal paths across its write surface, but publishes no time
+    window for any of them, so this grades documented rather than verified. No window is
+    asserted here that the provider did not state — in double-entry accounting the practical
+    limit is the open financial period (GetPeriodList), but AccountsIQ does not document that
+    as an API constraint and it is not claimed as one.
+  write_surfaces:
+  - surface: Sales / purchase invoice posting
+    forward_operations:
+    - PostInvoiceGetBackTransactionID
+    - PostInvoicesGetBackTransactionIDs
+    - SaveInvoiceGetBackInvoiceID
+    reversal_operation: CancelInvoice
+    reversal_kind: cancel
+    window: null
+    window_source: null
+  - surface: Posted sales / purchase ledger value
+    forward_operations:
+    - PostInvoiceGetBackTransactionID
+    reversal_operation: PostCreditNoteGetBackTransactionID
+    reversal_kind: compensating-entry
+    note: >-
+      The accounting-native reversal. A posted invoice is not deleted; a credit note is raised
+      against it. Batch and per-line variants exist (CreateBatchSalesCreditNote,
+      CreateCreditNotesGetBackCreditNoteIDs, SaveCreditNoteGetBackCreditNoteID).
+    window: null
+    window_source: null
+  - surface: Transaction allocation / matching
+    forward_operations:
+    - AllocateTransactions
+    - AllocateTransactionsWithDiscount
+    reversal_operation: UnallocateTransactions
+    reversal_kind: undo
+    window: null
+    window_source: null
+  - surface: Journals
+    forward_operations:
+    - CreateGeneralJournalGetBackTransactionID
+    - PostSalesDebitJournalGetBackTransactionID
+    - PostPurchasesCreditJournalGetBackTransactionID
+    reversal_operation: null
+    reversal_kind: compensating-entry
+    note: >-
+      No reverse-journal operation is published. A posted journal is corrected by posting an
+      opposing journal, which the API supports but does not name as a reversal.
+    window: null
+    window_source: null
+  - surface: Customer / supplier master records
+    forward_operations:
+    - UpdateCustomer
+    - UpdateSupplier
+    reversal_operation: DeleteCustomerById
+    reversal_kind: delete
+    note: >-
+      DeleteCustomerByCode/ById and DeleteSupplierByCode/ById exist. No restore or undelete
+      operation is published, and no retention window is stated, so a delete must be treated
+      as unrecoverable through the API.
+    restorable: false
+    window: null
+    window_source: null
+  - surface: Transaction dispute state
+    forward_operations:
+    - DisputeTransactions
+    reversal_operation: DisputeTransactions
+    reversal_kind: toggle
+    window: null
+    window_source: null
+dry_run_mode:
+  supported: partial
+  note: >-
+    No global dry-run flag. AccountsIQ instead publishes five dedicated pre-flight validators
+    that let an agent check a payload before committing it, which is the same affordance
+    scoped to defaults records.
+  operations:
+  - CheckBankDefaultsValidity
+  - CheckCustomerDefaultsValidity
+  - CheckGLDefaultsValidity
+  - CheckStockItemDefaultsValidity
+  - CheckSupplierDefaultsValidity
+  additional_pattern: >-
+    The GetNew* family (GetNewSalesInvoice, GetNewCustomerFromDefaults,
+    GetNewStockItemFromDefaults, GetNewSupplierFromDefaults and 15 others) returns a
+    server-populated, unposted shell object. Building on that shell and inspecting it before
+    calling Post* is the provider's documented way to rehearse a write.
+  separate_environment: >-
+    A staging environment is the documented rehearsal surface — see
+    sandbox/accountsiq-sandbox.yml.
+pagination:
+  style: skip-limit
+  coverage: partial
+  note: >-
+    Pagination is not uniform. Most list operations return the full result set; a named subset
+    of high-volume reads takes explicit paging arguments.
+  parameters:
+  - name: skip
+    type: int
+    description: Zero-based offset.
+  - name: limit
+    type: int
+    description: Page size.
+  paged_operations:
+  - GetAllocationsBetweenPaged
+  - GetAllocationsBetweenWithCreationDatePaged
+  - GetOrdersByPaged
+  query_object_paging:
+    note: >-
+      The WSGetXxxByQuery request objects (WSGetOrdersByQuery, WSGetInvoicesByQuery,
+      WSGetTransactionsByQuery, WSGetCustomersByQuery, WSGetSuppliersByQuery,
+      WSGetStockItemsByQuery, WSGetDepartmentsByQuery, WSGetAdjustedInvoicesByQuery) carry a
+      Skip field, so the By-query reads page through the same offset mechanism.
+  counting:
+    operation: GetCountTransactionsBy
+    description: Returns the total so a caller can size its paging loop.
+  cursor: false
+filtering:
+  style: typed query object
+  note: >-
+    Rather than query-string parameters, the richer reads take a WSGetXxxByQuery complex type
+    carrying date ranges (FromDate/ToDate and FromCreationDate/ToCreationDate as separate
+    axes), array filters (TypesFilter, AccountIDsFilter, OrderIDsFilter, Ledger, Status) and
+    the Skip offset.
+  change_detection:
+  - GetTransactionChangesBetween
+  - GetAccountsWithTransactionsCreatedBetween
+  - GetTransactionsCreatedByAccountBetween
+  - GetAllocationsForTransactionsCreatedBetween
+  - GetTransactionsModifiedBy
+  incremental_sync: >-
+    Creation date and modification date are exposed as distinct filter axes, which is what
+    makes incremental polling possible in the absence of webhooks.
+bulk:
+  supported: true
+  note: >-
+    Bulk is the provider's documented answer to throughput and is a first-class part of the
+    contract, distinguished by plural operation names.
+  convention: >-
+    Plural name means bulk. Use GetNewSalesInvoices instead of GetNewSalesInvoice, and
+    PostInvoicesGetBackTransactionIDs instead of PostInvoiceGetBackTransactionID.
+  throughput_claim: The bulk methods can support thousands of records a second.
+  claim_source: https://accountsiq.github.io/API-Wiki/troubleshooting.html
+  partial_failure: >-
+    Bulk responses return per-row DataErrorDTO entries (ErrorMessage + Comment) so a partial
+    failure identifies the offending record.
+  bulk_operations:
+  - CreateBatchSalesInvoiceBulkGetBackTransactionIDs
+  - CreateBatchPurchasesInvoiceBulkGetBackTransactionIDs
+  - CreateBatchSalesCreditNoteBulkGetBackTransactionIDs
+  - CreateBatchPurchasesDebitNoteBulkGetBackTransactionIDs
+  - PostInvoicesGetBackTransactionIDs
+  - PostCreditNotesGetBackTransactionIDs
+  - CreateInvoicesGetBackInvoiceIDs
+  - CreateCreditNotesGetBackCreditNoteIDs
+  - SaveSundryReceiptPaymentsGetBackTransactionIDs
+  - PostPayAndAllocateSalesInvoices
+error_envelope:
+  shape: in-band typed result
+  wrapper: WSResult2Of<T>
+  fields:
+  - Status
+  - ErrorCode
+  - ErrorMessage
+  - HasExpired
+  - Result
+  soap_faults_declared: false
+  note: >-
+    The WSDL declares no wsdl:fault. Errors ride the success envelope, so a client must
+    inspect Status and ErrorCode on every response rather than relying on a transport-level
+    failure.
+  see: errors/accountsiq-error-codes.yml
+request_id_tracing:
+  supported: false
+  note: >-
+    No request-id or correlation header is documented or declared in the contract. The nearest
+    caller-side equivalent is the ExternalReference field, which correlates a business document
+    rather than an HTTP call.
+versioning:
+  style: versioned service endpoint
+  note: >-
+    The version is in the service path (integration_1_1.asmx / integration_2_0.asmx), so 1.1
+    and 2.0 are separately addressable contracts served side by side, not a header negotiation.
+  compatibility_policy: >-
+    AccountsIQ states it makes backward-compatible changes only, and that refreshing the
+    generated WSDL proxy is recommended but not mandatory for that reason.
+  source: https://accountsiq.github.io/API-Wiki/specifications.html
+  see: lifecycle/accountsiq-lifecycle.yml
+rate_limit_signaling:
+  headers: []
+  note: >-
+    AccountsIQ explicitly states there is no rate limit, and returns no RateLimit-*,
+    X-RateLimit-* or Retry-After signalling. See rate-limits/accountsiq-rate-limits.yml.
+  source: https://accountsiq.github.io/API-Wiki/authentication1.html
+field_conventions:
+  null_handling: >-
+    Server-assigned fields must be sent as xsi:nil="true", not as an empty string and not as
+    the literal "N/A". This trips integrators often enough that the provider calls it out.
+  case_sensitivity: >-
+    Account codes (customer code, supplier code, item group id, location id, stock item id)
+    must be UPPER CASE. A large share of the 2,404 error codes are *_IS_NOT_UPPERCASE.
+  code_generation: >-
+    The system does not generate account codes dynamically; the caller must supply them.
+  source: https://accountsiq.github.io/API-Wiki/troubleshooting.html
+cross_links:
+  errors: errors/accountsiq-error-codes.yml
+  authentication: authentication/accountsiq-authentication.yml
+  lifecycle: lifecycle/accountsiq-lifecycle.yml
+  rate_limits: rate-limits/accountsiq-rate-limits.yml
+  data_model: data-model/accountsiq-data-model.yml
+  sandbox: sandbox/accountsiq-sandbox.yml

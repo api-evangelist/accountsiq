@@ -1,0 +1,285 @@
+generated: '2026-09-06'
+method: derived
+source: wsdl/accountsiq-integration-2-0.wsdl (219 operations); no AccountsIQ MCP server exists.
+status: candidate
+name: accountsiq
+note: AccountsIQ ships NO MCP server. Searches of the provider site, the API Wiki, the AccountsIQ GitHub organisation
+  (one public repo, API-Wiki), npm and PyPI found no hosted endpoint and no stdio package, and the llms.txt
+  AccountsIQ publishes at accountsiq.com/llms.txt points only at marketing and help pages - it names no MCP
+  surface. The tool list below is a CANDIDATE derived by grouping the real WSDL operations into agent-shaped
+  tasks. It is a proposal for AccountsIQ, not a description of something callable today. Every operation named
+  in backing_operations was grepped from the contract and exists; no endpoint URL is invented. Because it is
+  a candidate, apis.yml points at this file with type X-MCPServerCandidate and NOT with type MCPServer.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  verified: searched
+  auth_note: 'If AccountsIQ were to build this, the auth model already exists: OAuth 2.0 client-credentials
+    via TokenGet/TokenRefresh, with the target Entity carried alongside the access token. GetEntitiesByToken
+    makes entity selection discoverable, which is the hard part of a multi-tenant MCP server and is already
+    solved in the contract.'
+transport_note: 'An MCP server here would be a translation layer, not a thin proxy: MCP speaks JSON-RPC over
+  HTTP/stdio and AccountsIQ speaks SOAP 1.1 with XML envelopes, so the server would own envelope construction,
+  the AiqSoapHeader, and unwrapping the WSResult2Of<T> result (which reports errors in-band on a 200, not as
+  a fault).'
+agent_hazards:
+- No idempotency. A retried create_sales_invoice posts a second invoice. An MCP server would need to implement
+  deduplication itself, most plausibly on the ExternalReference field.
+- Errors arrive on the success envelope. A naive proxy that checks only HTTP status will report every failure
+  as a success with a null result.
+- Writes are financial. create_sales_invoice, post_journal, record_payment and allocate_transactions change
+  a ledger; consequence is recorded per tool so a server can gate them behind confirmation.
+- Deletes are unrecoverable. DeleteCustomerById has no published restore path, which is why no delete tool
+  is proposed above.
+tool_count: 27
+tools:
+- name: list_customers
+  description: List or search customer accounts in an entity.
+  category: accounts-receivable
+  backing_operations:
+  - GetCustomerList
+  - GetActiveCustomerList
+  - GetCustomersBy
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_customer
+  description: Retrieve one customer account with balances and contacts.
+  category: accounts-receivable
+  backing_operations:
+  - GetCustomer
+  - GetCustomerBalanceInformation
+  - GetCustomerContacts
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: list_suppliers
+  description: List or search supplier accounts in an entity.
+  category: accounts-payable
+  backing_operations:
+  - GetSupplierList
+  - GetActiveSupplierList
+  - GetSuppliersBy
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_supplier
+  description: Retrieve one supplier account with balances and contacts.
+  category: accounts-payable
+  backing_operations:
+  - GetSupplier
+  - GetSupplierBalanceInformation
+  - GetSupplierContacts
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_chart_of_accounts
+  description: Read the general ledger chart of accounts, optionally consolidated across a group.
+  category: general-ledger
+  backing_operations:
+  - GetChartOfAccounts
+  - GetChartOfAccountsByConsolidationGroup
+  - GetGLAccountList
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_trial_balance
+  description: Read the trial balance for a financial period.
+  category: reporting
+  backing_operations:
+  - GetTrialBalanceForPeriod
+  - GetTrialBalanceFromStartOfPeriod
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: list_transactions
+  description: Query ledger transactions by date, account, type or external reference.
+  category: general-ledger
+  backing_operations:
+  - GetTransactionsBy
+  - GetTransactionsByExternalReference
+  - GetTransaction
+  - GetCountTransactionsBy
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_transaction_changes
+  description: Poll for transactions created or modified in a window - the incremental sync primitive.
+  category: sync
+  backing_operations:
+  - GetTransactionChangesBetween
+  - GetAccountsWithTransactionsCreatedBetween
+  - GetTransactionsCreatedByAccountBetween
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: list_invoices
+  description: Query sales or purchase invoices by customer, supplier, date or external reference.
+  category: invoicing
+  backing_operations:
+  - GetInvoicesBy
+  - GetInvoicesByCustomerCode
+  - GetInvoicesBySupplierCode
+  - GetInvoicesByExternalReference
+  - GetInvoice
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: create_sales_invoice
+  description: Create and post a sales invoice, returning its transaction id.
+  category: invoicing
+  backing_operations:
+  - GetNewSalesInvoice
+  - SaveInvoiceGetBackInvoiceID
+  - PostInvoiceGetBackTransactionID
+  consequence: write-financial
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: create_sales_invoices_bulk
+  description: Create and post many sales invoices in one call.
+  category: invoicing
+  backing_operations:
+  - GetNewSalesInvoices
+  - CreateInvoicesGetBackInvoiceIDs
+  - PostInvoicesGetBackTransactionIDs
+  consequence: write-financial
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: cancel_invoice
+  description: Cancel an invoice.
+  category: invoicing
+  backing_operations:
+  - CancelInvoice
+  consequence: reversal
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: create_credit_note
+  description: Raise a credit note against a posted invoice - the accounting-native reversal.
+  category: invoicing
+  backing_operations:
+  - GetNewSalesCreditNote
+  - SaveCreditNoteGetBackCreditNoteID
+  - PostCreditNoteGetBackTransactionID
+  consequence: reversal
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: record_payment
+  description: Record a supplier payment or a sales receipt.
+  category: banking
+  backing_operations:
+  - SavePurchasePaymentGetBackTransactionID
+  - SaveSalesReceiptGetBackTransactionID
+  - SaveSundryReceiptPaymentsGetBackTransactionIDs
+  consequence: write-financial
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: allocate_transactions
+  description: Match payments to invoices, with or without settlement discount.
+  category: banking
+  backing_operations:
+  - AllocateTransactions
+  - AllocateTransactionsWithDiscount
+  - GetAllocationsByTransactionId
+  consequence: write-financial
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: unallocate_transactions
+  description: Reverse a payment-to-invoice allocation.
+  category: banking
+  backing_operations:
+  - UnallocateTransactions
+  consequence: reversal
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: post_journal
+  description: Post a general, sales or purchase ledger journal.
+  category: general-ledger
+  backing_operations:
+  - CreateGeneralJournalGetBackTransactionID
+  - PostSalesDebitJournalGetBackTransactionID
+  - PostPurchasesCreditJournalGetBackTransactionID
+  consequence: write-financial
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: manage_customer
+  description: Create or update a customer account.
+  category: accounts-receivable
+  backing_operations:
+  - GetNewCustomerFromDefaults
+  - UpdateCustomer
+  - UpdateCustomerGetbackCustomerCode
+  - CheckCustomerDefaultsValidity
+  consequence: write-master-data
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: manage_supplier
+  description: Create or update a supplier account.
+  category: accounts-payable
+  backing_operations:
+  - GetNewSupplierFromDefaults
+  - UpdateSupplier
+  - UpdateSupplierGetBackSupplierCode
+  - CheckSupplierDefaultsValidity
+  consequence: write-master-data
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: manage_stock_item
+  description: Create or update a stock item and read its location status.
+  category: inventory
+  backing_operations:
+  - GetNewStockItemFromDefaults
+  - SaveStockItem
+  - GetStockItem
+  - GetStockItemLocationStatus
+  consequence: write-master-data
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: list_orders
+  description: Query sales and purchase orders.
+  category: order-processing
+  backing_operations:
+  - GetOrdersBy
+  - GetOrdersByPaged
+  - GetOrdersByCustomerCode
+  - GetOrdersBySupplierCode
+  - GetOrder
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: create_order
+  description: Create a sales or purchase order and deliver against it.
+  category: order-processing
+  backing_operations:
+  - GetNewSalesOrder
+  - GetNewPurchasesOrder
+  - SaveOrderGetBackOrderID
+  - DeliverOrderLines
+  consequence: write-financial
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_budget
+  description: Read or write budget data for an entity.
+  category: planning
+  backing_operations:
+  - GetBudgetData
+  - SaveBudgetData
+  consequence: write-master-data
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_company_information
+  description: 'Read entity setup: company info, periods, currencies, tax codes, credit terms, banks.'
+  category: reference-data
+  backing_operations:
+  - GetCompanyInformation
+  - GetPeriodList
+  - GetCurrencyList
+  - GetTaxCodeList
+  - GetCreditTermList
+  - GetBankList
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: list_entities
+  description: List the entities the current access token can reach.
+  category: reference-data
+  backing_operations:
+  - GetEntitiesByToken
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: get_invoice_pdf
+  description: Retrieve a rendered invoice or sales receipt PDF.
+  category: documents
+  backing_operations:
+  - GetInvoicePDFByTransactionID
+  - GetInvoicePDFByTransactionIDAndReportStyleName
+  - GetSalesReceiptPDFByTransactionID
+  consequence: read
+  input_schema: derived from the WSDL message parts of the backing operation(s)
+- name: manage_documents
+  description: Attach a document to a record or retrieve attachments.
+  category: documents
+  backing_operations:
+  - AttachDocument
+  - GetDocument
+  - GetAttachedDocumentList
+  consequence: write-master-data
+  input_schema: derived from the WSDL message parts of the backing operation(s)

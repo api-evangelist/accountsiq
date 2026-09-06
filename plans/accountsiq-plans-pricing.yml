@@ -1,0 +1,96 @@
+generated: '2026-09-06'
+method: searched
+source: https://www.accountsiq.com/pricing
+docs:
+- https://www.accountsiq.com/pricing
+plan_count: 3
+pricing_model: quote-only
+currencies:
+- GBP
+- EUR
+billing_period: monthly
+note: >-
+  AccountsIQ publishes a three-tier plan structure with named feature sets, but no number:
+  every tier reads "From POA per month" (price on application). The tiers are recorded because
+  the tiering itself is real and load-bearing for API consumers — API access is a tier
+  entitlement, not a universal one — but no price is asserted here because none is published.
+api_access_is_tiered: true
+api_access_note: >-
+  This is the commercially significant fact on the page. The API Wiki states "All AIQ editions
+  have access to our API without restriction", which is a statement about technical
+  availability; the pricing page gates it commercially. Core lists no API access, Growth
+  includes self-service integration, and Scale includes AIQ-managed integration. An integrator
+  should confirm the customer's tier before assuming API entitlement.
+plans:
+- name: Core
+  price: null
+  price_display: From POA per month
+  currency:
+  - GBP
+  - EUR
+  period: month
+  users_included: 2
+  entities_included: 1
+  api_access: false
+  api_access_display: Not included
+  features:
+  - Accounts receivable and accounts payable
+  - VAT with Making Tax Digital
+  - Bank feeds with automated reconciliation
+  - Budgeting
+  - Basic reporting
+  - Document manager
+  - Single-step workflow approval
+- name: Growth
+  price: null
+  price_display: From POA per month
+  currency:
+  - GBP
+  - EUR
+  period: month
+  users_included: null
+  entities_included: null
+  api_access: true
+  api_access_display: Self-Integrate with AIQ
+  features:
+  - Everything in Core
+  - Personal account manager
+  - Purchase and sales order processing
+  - Fixed asset register
+  - Excel and Power BI connector
+  - Four-dimensional BI analysis
+  - Unlimited approval workflow steps
+  - Sandbox database
+- name: Scale
+  price: null
+  price_display: From POA per month
+  currency:
+  - GBP
+  - EUR
+  period: month
+  users_included: null
+  entities_included: null
+  multi_entity: true
+  api_access: true
+  api_access_display: AIQ-Managed Integration
+  features:
+  - Everything in Growth
+  - Six-dimensional BI analysis
+  - Custom integration built and managed by AccountsIQ
+  - Non-financial metrics
+  - Advanced reporting
+  - Higher transaction capacity
+quotas:
+  published: false
+  note: >-
+    No API call quotas, transaction quotas or overage rates are published for any tier. Scale
+    is described as offering "higher transaction capacity" without a stated number.
+overage:
+  published: false
+api_licensing:
+  note: >-
+    Separately from the subscription tiers, API use is governed by the API Terms of Use, which
+    require an API key obtained by registering an intended use with AccountsIQ. The licence is
+    royalty-free and fully paid up, but non-transferable and non-sublicensable, and keys may
+    not be shared.
+  source: https://accountsiq.github.io/API-Wiki/termsofuse.html

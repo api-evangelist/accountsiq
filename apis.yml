@@ -1,23 +1,146 @@
 aid: accountsiq
-name: Accountsiq
-description: 'Accountsiq is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+name: AccountsIQ
+description: 'AccountsIQ is a cloud accounting and financial management platform for
+  mid-sized businesses and multi-entity group structures, headquartered in Dublin, Ireland.
+  The platform covers the general ledger, accounts receivable and payable, banking and
+  bank-feed reconciliation, budgeting, cashflow forecasting, fixed assets, stock, sales
+  and purchase order processing, multi-currency consolidation and business intelligence.
+  Its public integration surface is the AIQ SOAP API, published as two WSDL contracts —
+  Integration 1.1 (session-token Login authentication) and Integration 2.0 (OAuth 2.0
+  client-credentials via TokenGet/TokenRefresh) — served from four regional deployments
+  (eu1, eu2, uk1, us1) and documented in the openly published AccountsIQ API Wiki, with
+  first-party Postman collections for every region and version.'
+image: https://cdn.prod.website-files.com/6789021db7b1eb2a4e86ccba/68302f995f42ad33549c88c1_open-graph.png
 url: https://raw.githubusercontent.com/api-evangelist/accountsiq/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
+position: Producing
 specificationVersion: '0.20'
 created: '2026-09-06'
 modified: '2026-09-06'
 tags:
 - Company
-apis: []
+- Accounting
+- Financial Management
+- Cloud Accounting
+- ERP
+- Consolidation
+- General Ledger
+- Business Intelligence
+- SOAP
+- Ireland
+x-enrichment:
+  date: '2026-09-06'
+  status: enriched
+  artifacts_added: 16
+  pass: local-v3
+apis:
+- aid: accountsiq:integration-2-0
+  name: AccountsIQ Integration API 2.0
+  image: https://cdn.prod.website-files.com/6789021db7b1eb2a4e86ccba/68302f995f42ad33549c88c1_open-graph.png
+  description: 'The current AIQ SOAP 1.1 integration web service. 219 operations covering
+    customers, suppliers, stock items, sales and purchase invoices, credit and debit
+    notes, orders, deliveries, general journals, bank transfers, payments and receipts,
+    transaction allocation, budgets, the chart of accounts, trial balance, analysis
+    dimensions, departments, projects, notes and document attachments. Authenticated
+    with OAuth 2.0 client credentials via TokenGet/TokenRefresh; the access token and
+    the target Entity are carried in the AiqSoapHeader.'
+  humanURL: https://accountsiq.github.io/API-Wiki/
+  baseURL: https://eu1.accountsiq.com/system/dashboard/integration/integration_2_0.asmx
+  tags:
+  - Accounting
+  - SOAP
+  - General Ledger
+  - Invoicing
+  - Consolidation
+  properties:
+  - type: WSDL
+    url: wsdl/accountsiq-integration-2-0.wsdl
+  - type: Authentication
+    url: authentication/accountsiq-authentication.yml
+  - type: ErrorCatalog
+    url: errors/accountsiq-error-codes.yml
+  - type: DataModel
+    url: data-model/accountsiq-data-model.yml
+  - type: Conventions
+    url: conventions/accountsiq-conventions.yml
+- aid: accountsiq:integration-1-1
+  name: AccountsIQ Integration API 1.1
+  image: https://cdn.prod.website-files.com/6789021db7b1eb2a4e86ccba/68302f995f42ad33549c88c1_open-graph.png
+  description: 'The legacy AIQ SOAP 1.1 integration web service, still published and
+    supported alongside 2.0. 217 operations over the same accounting surface, authenticated
+    with the Login method, which returns a session token valid for 20 minutes and passed
+    as the first parameter of every subsequent call.'
+  humanURL: https://accountsiq.github.io/API-Wiki/authentication1.html
+  baseURL: https://eu1.accountsiq.com/system/dashboard/integration/integration_1_1.asmx
+  tags:
+  - Accounting
+  - SOAP
+  - Legacy
+  properties:
+  - type: WSDL
+    url: wsdl/accountsiq-integration-1-1.wsdl
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: TrustCenter
+  url: security/accountsiq-trust-center.yml
 - type: Website
-  url: https://equityzen.com/company/accountsiq
+  url: https://www.accountsiq.com/
+- type: DeveloperPortal
+  url: https://accountsiq.github.io/API-Wiki/
+- type: Documentation
+  url: https://accountsiq.github.io/API-Wiki/
+- type: APIReference
+  url: https://accountsiq.github.io/API-Wiki/specifications.html
+- type: GettingStarted
+  url: https://accountsiq.github.io/API-Wiki/integration.html
+- type: Postman
+  url: https://accountsiq.github.io/API-Wiki/postman-collection.html
+- type: GitHubOrganization
+  url: https://github.com/accountsIQ
+- type: Support
+  url: https://www.accountsiq.com/success/support/
+- type: HelpCenter
+  url: https://help.accountsiq.com/
+- type: Blog
+  url: https://www.accountsiq.com/resource/blog
+- type: Pricing
+  url: https://www.accountsiq.com/pricing
+- type: SignUp
+  url: https://www.accountsiq.com/contact/
+- type: TermsOfService
+  url: https://www.accountsiq.com/legal/terms-conditions
+- type: PrivacyPolicy
+  url: https://www.accountsiq.com/legal/privacy-statement
+- type: TrustCenter
+  url: https://trust.accountsiq.com/
+- type: Compliance
+  url: conformance/accountsiq-conformance.yml
+- type: StatusPage
+  url: https://status.accountsiq.com/
+- type: LLMsTxt
+  url: llms/accountsiq-llms.txt
+- type: Examples
+  url: https://uk1.accountsiq.com/system/dashboard/integration/integration_1_1.asmx
+- type: Lifecycle
+  url: lifecycle/accountsiq-lifecycle.yml
+- type: Conformance
+  url: conformance/accountsiq-conformance.yml
+- type: Sandbox
+  url: sandbox/accountsiq-sandbox.yml
+- type: Plans
+  url: plans/accountsiq-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/accountsiq-rate-limits.yml
+- type: Packages
+  url: packages/accountsiq-packages.yml
+- type: DomainSecurity
+  url: security/accountsiq-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: X-MCPServerCandidate
+  url: mcp/accountsiq-mcp.yml

@@ -1,0 +1,104 @@
+generated: '2026-09-06'
+method: searched
+source: https://accountsiq.github.io/API-Wiki/specifications.html
+docs:
+- https://accountsiq.github.io/API-Wiki/index.html
+- https://accountsiq.github.io/API-Wiki/specifications.html
+- https://accountsiq.github.io/API-Wiki/termsofuse.html
+versioning:
+  scheme: major.minor in the service path
+  current_version: '2.0'
+  supported_versions:
+  - version: '1.1'
+    status: supported
+    endpoint_path: /system/dashboard/integration/integration_1_1.asmx
+    wsdl: wsdl/accountsiq-integration-1-1.wsdl
+    operations: 217
+    authentication: Login session token
+    note: >-
+      Still published and served on all four regions, and still the documented path for
+      integrators who have not moved to OAuth. AccountsIQ has not announced an end date for
+      it, and it is not marked deprecated anywhere in the published documentation.
+  - version: '2.0'
+    status: current
+    endpoint_path: /system/dashboard/integration/integration_2_0.asmx
+    wsdl: wsdl/accountsiq-integration-2-0.wsdl
+    operations: 219
+    authentication: OAuth 2.0 client credentials (TokenGet / TokenRefresh)
+  version_delta:
+    added_in_2_0:
+    - TokenGet
+    - TokenRefresh
+    - GetEntitiesByToken
+    - GetSuppliersNotes
+    removed_in_2_0:
+    - Login
+    renamed:
+    - from: GetSupplierNotes
+      to: GetSuppliersNotes
+    note: >-
+      Derived by diffing the two WSDL operation sets. The 2.0 surface is a superset of 1.1
+      apart from Login (replaced by the token operations) and the GetSupplierNotes rename,
+      which is consistent with the stated backward-compatibility policy.
+compatibility_policy:
+  stated: true
+  policy: >-
+    "The AccountsIQ system evolves constantly and so does its API. To avoid incompatibilities
+    with our integrator partner applications, we make backward compatible changes."
+  source: https://accountsiq.github.io/API-Wiki/index.html
+  consequence: >-
+    Because only backward-compatible changes are made, AccountsIQ documents that refreshing
+    the generated WSDL proxy is recommended but not mandatory.
+  consequence_source: https://accountsiq.github.io/API-Wiki/specifications.html
+deprecation_policy:
+  published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    No deprecation policy, no notice period, and no Sunset/Deprecation response headers are
+    published. The contract declares no deprecated operations. What AccountsIQ publishes
+    instead is the inverse commitment — backward-compatible change only — plus an explicit
+    reservation of the right to withdraw without notice in the API Terms of Use, which states
+    that the licence "does not grant to you any right to any version enhancement, update, or
+    guarantee the continuous availability of the AccountsIQ API" and that AccountsIQ "may
+    revise, modify or cease to provide, require you to immediately cease using the AccountsIQ
+    API ... which may result in loss of compatibility, denial of access". Those two sit in
+    tension and an integrator should read both.
+  terms_source: https://accountsiq.github.io/API-Wiki/termsofuse.html
+change_notification:
+  channel: SOAP API Update Bulletin
+  type: opt-in mailing list
+  description: >-
+    AccountsIQ operates a developer mailing list carrying the latest bug fixes and new methods.
+    It is the only change-notification channel published for the API.
+  dated_changelog_published: false
+  note: >-
+    No dated, publicly readable changelog page exists for the API — change history is delivered
+    by email to subscribers, so it is not machine-readable and cannot be captured as a
+    changelog/ artifact. This is a real gap: an agent or an integrator cannot tell what changed
+    without being on the list.
+  source: https://accountsiq.github.io/API-Wiki/index.html
+status_page:
+  url: https://status.accountsiq.com/
+  platform: Status.io
+  http_status: 200
+  machine_readable_feed: false
+  note: >-
+    A hosted status page is served. Probing for the common machine-readable summaries returned
+    404 (/api/v2/summary.json, /summary.json, /api/status), so the page is human-readable only.
+sla:
+  published: false
+  note: >-
+    No public SLA or uptime commitment is published for the API. The API Terms of Use
+    explicitly decline to guarantee continuous availability.
+availability_scope:
+  statement: All AIQ editions have access to our API without restriction.
+  source: https://accountsiq.github.io/API-Wiki/index.html
+  caveat: >-
+    The pricing page qualifies this commercially: the Core tier lists API access as not
+    included, Growth as "Self-Integrate with AIQ" and Scale as "AIQ-Managed Integration". The
+    wiki statement is about technical availability across editions; the tiering is about
+    commercial entitlement. See plans/accountsiq-plans-pricing.yml.
+  caveat_source: https://www.accountsiq.com/pricing
+deprecated_operations: []

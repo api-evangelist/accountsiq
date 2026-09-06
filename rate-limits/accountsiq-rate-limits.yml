@@ -1,0 +1,50 @@
+generated: '2026-09-06'
+method: searched
+source: https://accountsiq.github.io/API-Wiki/authentication1.html
+docs:
+- https://accountsiq.github.io/API-Wiki/authentication1.html
+- https://accountsiq.github.io/API-Wiki/troubleshooting.html
+- https://accountsiq.github.io/API-Wiki/termsofuse.html
+limit_count: 0
+note: >-
+  AccountsIQ makes an explicit published statement that there is no rate limit — this is a
+  documented absence of limits, not an undocumented one, which is a materially different fact
+  and is why limit_count is 0 with an affirmative quote rather than an unknown. Nothing in the
+  contract or the docs describes a quota, a burst allowance, a throttle, or a 429-equivalent
+  error, and the 2,404-value VisorExceptionCodes enumeration in the WSDL contains no
+  rate-limit or throttling code.
+published_statement:
+  quote: There is no rate limit.
+  context: >-
+    Stated on the Authentication 1.1 page, immediately after the description of the 20-minute
+    session token, in the paragraph describing token behaviour.
+  source: https://accountsiq.github.io/API-Wiki/authentication1.html
+limits: []
+response_headers:
+  published: []
+  note: >-
+    No RateLimit-*, X-RateLimit-* or Retry-After headers are documented, and none would be
+    idiomatic here: this is a SOAP 1.1 service that reports every condition in-band on the
+    response envelope rather than through HTTP headers or status codes.
+exhaustion_status_code: null
+token_expiry_not_a_rate_limit:
+  note: >-
+    The one recurring throttle-shaped signal an integrator will meet is token expiry, which is
+    not a rate limit. Integration 1.1 session tokens expire after 20 minutes; the response
+    carries HasExpired=true and the client must call Login again. Integration 2.0 tokens are
+    renewed with TokenRefresh.
+fair_use_obligations:
+  note: >-
+    In place of numeric limits, AccountsIQ imposes contractual fair-use obligations in the API
+    Terms of Use. A consumer application must not adversely affect the performance or stability
+    of the AccountsIQ software or the behaviour of other applications using the API. In
+    practice this is the operative constraint on call volume, and it is qualitative and
+    enforced commercially rather than by a counter.
+  source: https://accountsiq.github.io/API-Wiki/termsofuse.html
+throughput_guidance:
+  note: >-
+    Rather than limiting throughput, the provider directs high-volume callers to the bulk
+    operations, claiming they "can support thousands of records a second" and naming them by
+    their plural form (PostInvoicesGetBackTransactionIDs over PostInvoiceGetBackTransactionID).
+  source: https://accountsiq.github.io/API-Wiki/troubleshooting.html
+  see: conventions/accountsiq-conventions.yml

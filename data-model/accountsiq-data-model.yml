@@ -1,0 +1,1079 @@
+generated: '2026-09-06'
+method: derived
+source: wsdl/accountsiq-integration-2-0.wsdl (XSD complexType graph, parsed with ElementTree and resolved through
+  complexContent/extension inheritance); glossary terms from https://accountsiq.github.io/API-Wiki/a-z.html
+note: 'Derived from the XSD embedded in the SOAP contract. The WSDL declares 280 complex types; the entities below
+  are the accounting core. Relationships are read from element types (a tns: element type is a composition edge,
+  an ArrayOf<T> is a collection edge) and from id-reference field naming (FooCode / FooID pointing at entity Foo).
+  Nothing here is inferred from prose.'
+complex_type_count: 280
+tenancy:
+  root: Customer
+  description: 'AccountsIQ hierarchy above the accounting entities, as defined in the provider glossary: a Customer
+    is a practice or franchisor that groups Entities; an Entity is a client company. The API reads entity-level
+    data only and cannot reach customer/practice-level data.'
+  source: https://accountsiq.github.io/API-Wiki/a-z.html
+concurrency_field:
+  name: RowVersionNumber
+  description: Opaque optimistic-concurrency token present on most mutable entities. Must be echoed back from the
+    retrieved object on update; a stale value raises OUTDATED_RECORD.
+correlation_field:
+  name: ExternalReference
+  description: Caller-supplied key carried on invoices, orders, credit notes and transactions, readable back via
+    the GetXByExternalReference family.
+transaction_types:
+  note: Closed set of ledger transaction type codes published in the provider glossary.
+  source: https://accountsiq.github.io/API-Wiki/a-z.html
+  codes:
+  - code: BC
+    meaning: Bank Credit Journal
+  - code: BD
+    meaning: Bank Debit Journal
+  - code: BP
+    meaning: Bank Payment
+  - code: BR
+    meaning: Bank Receipt
+  - code: DP
+    meaning: Purchases Discount
+  - code: DS
+    meaning: Sales Discount
+  - code: GC/GD
+    meaning: General Journal
+  - code: PC
+    meaning: Purchases Credit Journal
+  - code: PD
+    meaning: Purchases Debit Journal
+  - code: PI
+    meaning: Purchases Invoice
+  - code: PN
+    meaning: Purchases Credit Note
+  - code: PP
+    meaning: Purchases Payment
+  - code: PR
+    meaning: Purchases Receipt
+  - code: SC
+    meaning: Sales Credit Journal
+  - code: SD
+    meaning: Sales Debit Journal
+  - code: SI
+    meaning: Sales Invoice
+  - code: SN
+    meaning: Sales Credit Note
+  - code: SR
+    meaning: Sales Receipt
+invoice_variants:
+  note: The provider glossary distinguishes three invoice shapes, which is why several parallel Create/Save/Post
+    families exist in the contract.
+  source: https://accountsiq.github.io/API-Wiki/a-z.html
+  variants:
+  - name: Batch Invoice
+    description: Lines hold no stock-item reference; posted directly to the transactions table with no stock movement.
+  - name: Product Invoice
+    description: Every line references an item; supports stock movement and must be posted to hit the transaction
+      journal.
+  - name: Service Invoice
+    description: Lines reference services or non-stock items; supports a pro-forma workflow and can be checked before
+      posting to the ledger.
+entities:
+- name: Customer
+  abstract: false
+  inheritance_chain:
+  - Customer
+  - Account
+  - ObjectBase
+  own_field_count: 0
+  total_field_count: 69
+  identity_fields:
+  - AccountID
+  - ExternalApproverID
+  - Code
+  - CountryCode
+  - Name
+  - GroupID
+  - DefaultTaxCode
+  - AreaID
+  - BankAccountCode
+  - CountryID
+  - CreditTermID
+  - CurrencyCode
+  - PaymentMethodID
+  - AuthorUserID
+  - ShipViaID
+  - PostCode
+  relationships:
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: CreditTerm
+    via: CreditTermID
+  - kind: belongs_to
+    target: DeliveryRoute
+    via: DeliveryRouteID
+  - kind: belongs_to
+    target: PriceList
+    via: PriceListID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: belongs_to
+    target: Bank
+    via: BankCode
+- name: Supplier
+  abstract: false
+  inheritance_chain:
+  - Supplier
+  - Account
+  - ObjectBase
+  own_field_count: 0
+  total_field_count: 69
+  identity_fields:
+  - AccountID
+  - ExternalApproverID
+  - Code
+  - CountryCode
+  - Name
+  - GroupID
+  - DefaultTaxCode
+  - AreaID
+  - BankAccountCode
+  - CountryID
+  - CreditTermID
+  - CurrencyCode
+  - PaymentMethodID
+  - AuthorUserID
+  - ShipViaID
+  - PostCode
+  relationships:
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: CreditTerm
+    via: CreditTermID
+  - kind: belongs_to
+    target: DeliveryRoute
+    via: DeliveryRouteID
+  - kind: belongs_to
+    target: PriceList
+    via: PriceListID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: belongs_to
+    target: Bank
+    via: BankCode
+- name: Account
+  abstract: false
+  inheritance_chain:
+  - Account
+  - ObjectBase
+  own_field_count: 69
+  total_field_count: 69
+  identity_fields:
+  - AccountID
+  - ExternalApproverID
+  - Code
+  - CountryCode
+  - Name
+  - GroupID
+  - DefaultTaxCode
+  - AreaID
+  - BankAccountCode
+  - CountryID
+  - CreditTermID
+  - CurrencyCode
+  - PaymentMethodID
+  - AuthorUserID
+  - ShipViaID
+  - PostCode
+  relationships:
+  - kind: belongs_to
+    target: CreditTerm
+    via: CreditTermID
+  - kind: belongs_to
+    target: DeliveryRoute
+    via: DeliveryRouteID
+  - kind: belongs_to
+    target: PriceList
+    via: PriceListID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: belongs_to
+    target: Bank
+    via: BankCode
+- name: StockItem
+  abstract: false
+  inheritance_chain:
+  - StockItem
+  - ObjectBase
+  own_field_count: 31
+  total_field_count: 31
+  identity_fields:
+  - StockItemID
+  - ItemGroupID
+  - ItemTypeID
+  - ItemSubgroupID
+  - DefaultLocationID
+  - DefaultSublocationID
+  - TaxCode
+  - OpeningStockGLAccountCode
+  - ClosingStockGLAccountCode
+  - DefaultSalesGLAccountCode
+  - DefaultPurchasesGLAccountCode
+  - OpeningWorkInProgressGLAccountCode
+  - ClosingWorkInProgressGLAccountCode
+  - RowVersionNumber
+  relationships:
+  - kind: belongs_to
+    target: ItemGroup
+    via: ItemGroupID
+  - kind: belongs_to
+    target: Tax
+    via: TaxCode
+- name: Invoice
+  abstract: false
+  inheritance_chain:
+  - Invoice
+  - InvoiceBase
+  - ObjectBase
+  own_field_count: 4
+  total_field_count: 66
+  identity_fields:
+  - InvoiceID
+  - AccountID
+  - AreaID
+  - CurrencyCode
+  - CurrrencyCode
+  - AccountTaxCode
+  - PaymentMethodID
+  - ShipmentViaID
+  - ExternalReference
+  - ExternalApproverID
+  - PostCode
+  - DeliveryPostCode
+  - AuthorUserID
+  - UseAccountTaxCode
+  - OrderID
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: Order
+    via: OrderID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: has_many
+    target: InvoiceLine
+    via: Lines
+  - kind: belongs_to
+    target: Account
+    via: AccountCode
+- name: InvoiceBase
+  abstract: true
+  inheritance_chain:
+  - InvoiceBase
+  - ObjectBase
+  own_field_count: 62
+  total_field_count: 62
+  identity_fields:
+  - InvoiceID
+  - AccountID
+  - AreaID
+  - CurrencyCode
+  - CurrrencyCode
+  - AccountTaxCode
+  - PaymentMethodID
+  - ShipmentViaID
+  - ExternalReference
+  - ExternalApproverID
+  - PostCode
+  - DeliveryPostCode
+  - AuthorUserID
+  - UseAccountTaxCode
+  - OrderID
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Invoice
+    via: InvoiceID
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: Order
+    via: OrderID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: has_many
+    target: InvoiceLine
+    via: Lines
+- name: InvoiceLine
+  abstract: false
+  inheritance_chain:
+  - InvoiceLine
+  - ObjectBase
+  own_field_count: 28
+  total_field_count: 28
+  identity_fields:
+  - InvoiceItemID
+  - InvoiceID
+  - OrderItemID
+  - StockItemID
+  - TaxCode
+  - LocationID
+  - SublocationID
+  - GLAccountCode
+  - OpeningStockGLAccountCode
+  - DeliveryItemID
+  - DepartmentID
+  - RowVersionNumber
+  relationships:
+  - kind: belongs_to
+    target: Invoice
+    via: InvoiceID
+  - kind: belongs_to
+    target: StockItem
+    via: StockItemID
+  - kind: belongs_to
+    target: Tax
+    via: TaxCode
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: CreditNote
+  abstract: false
+  inheritance_chain:
+  - CreditNote
+  - InvoiceBase
+  - ObjectBase
+  own_field_count: 0
+  total_field_count: 62
+  identity_fields:
+  - InvoiceID
+  - AccountID
+  - AreaID
+  - CurrencyCode
+  - CurrrencyCode
+  - AccountTaxCode
+  - PaymentMethodID
+  - ShipmentViaID
+  - ExternalReference
+  - ExternalApproverID
+  - PostCode
+  - DeliveryPostCode
+  - AuthorUserID
+  - UseAccountTaxCode
+  - OrderID
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Invoice
+    via: InvoiceID
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: Order
+    via: OrderID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: has_many
+    target: InvoiceLine
+    via: Lines
+- name: AdjustedInvoice
+  abstract: false
+  inheritance_chain:
+  - AdjustedInvoice
+  - Invoice
+  - InvoiceBase
+  - ObjectBase
+  own_field_count: 1
+  total_field_count: 67
+  identity_fields:
+  - InvoiceID
+  - AccountID
+  - AreaID
+  - CurrencyCode
+  - CurrrencyCode
+  - AccountTaxCode
+  - PaymentMethodID
+  - ShipmentViaID
+  - ExternalReference
+  - ExternalApproverID
+  - PostCode
+  - DeliveryPostCode
+  - AuthorUserID
+  - UseAccountTaxCode
+  - OrderID
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Invoice
+    via: InvoiceID
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: Order
+    via: OrderID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: has_many
+    target: InvoiceLine
+    via: Lines
+  - kind: belongs_to
+    target: Account
+    via: AccountCode
+  - kind: has_many
+    target: InvoiceTaxAdjustment
+    via: TaxAdjustments
+- name: Order
+  abstract: false
+  inheritance_chain:
+  - Order
+  - ObjectBase
+  own_field_count: 59
+  total_field_count: 59
+  identity_fields:
+  - OrderID
+  - AccountID
+  - AreaID
+  - CurrencyCode
+  - CurrrencyCode
+  - AccountTaxCode
+  - PaymentMethodID
+  - ShipmentViaID
+  - ExternalReference
+  - PostCode
+  - DeliveryPostCode
+  - AuthorUserID
+  - UseAccountTaxCode
+  - QuoteID
+  - DepartmentID
+  - TransferID
+  relationships:
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: has_many
+    target: OrderLine
+    via: Lines
+- name: OrderLine
+  abstract: false
+  inheritance_chain:
+  - OrderLine
+  - ObjectBase
+  own_field_count: 26
+  total_field_count: 26
+  identity_fields:
+  - OrderItemID
+  - OrderID
+  - QuoteItemID
+  - StockItemID
+  - TaxCode
+  - LocationID
+  - SublocationID
+  - GLAccountCode
+  - OpeningStockGLAccountCode
+  - DepartmentID
+  - RowVersionNumber
+  relationships:
+  - kind: belongs_to
+    target: Order
+    via: OrderID
+  - kind: belongs_to
+    target: StockItem
+    via: StockItemID
+  - kind: belongs_to
+    target: Tax
+    via: TaxCode
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: Transaction
+  abstract: false
+  inheritance_chain:
+  - Transaction
+  own_field_count: 3
+  total_field_count: 3
+  identity_fields: []
+  relationships:
+  - kind: has_many
+    target: TransactionLine
+    via: Lines
+- name: TransactionLine
+  abstract: false
+  inheritance_chain:
+  - TransactionLine
+  own_field_count: 41
+  total_field_count: 41
+  identity_fields:
+  - TransactionLineID
+  - TransactionID
+  - AccountID
+  - BankID
+  - CurrencyCode
+  - TaxCode
+  - AuthorUserID
+  - GLAccountCode
+  - ExternalReference
+  - BankstatementID
+  - PeriodID
+  - InvoiceID
+  - DepartmentID
+  - ReasonID
+  - SupplierBatchPaymentID
+  - VatReturnID
+  relationships:
+  - kind: belongs_to
+    target: Transaction
+    via: TransactionID
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: Bank
+    via: BankID
+  - kind: belongs_to
+    target: Tax
+    via: TaxCode
+  - kind: belongs_to
+    target: Invoice
+    via: InvoiceID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: GeneralJournal
+  abstract: false
+  inheritance_chain:
+  - GeneralJournal
+  - ObjectBase
+  own_field_count: 4
+  total_field_count: 4
+  identity_fields:
+  - ExternalReference
+  relationships:
+  - kind: has_many
+    target: GeneralJournalLine
+    via: Lines
+- name: GeneralJournalLine
+  abstract: false
+  inheritance_chain:
+  - GeneralJournalLine
+  - ObjectBase
+  own_field_count: 10
+  total_field_count: 10
+  identity_fields:
+  - GLAccountCode
+  - DepartmentID
+  - VatReturnID
+  relationships:
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: Department
+  abstract: false
+  inheritance_chain:
+  - Department
+  own_field_count: 9
+  total_field_count: 9
+  identity_fields:
+  - DepartmentID
+  relationships: []
+- name: Project
+  abstract: false
+  inheritance_chain:
+  - Project
+  - ObjectBase
+  own_field_count: 12
+  total_field_count: 12
+  identity_fields:
+  - ProjectCode
+  - Name
+  - AIQCustomerCode
+  - AIQBICodeID
+  relationships: []
+- name: Bank
+  abstract: false
+  inheritance_chain:
+  - Bank
+  - ObjectBase
+  own_field_count: 20
+  total_field_count: 20
+  identity_fields:
+  - BankID
+  - Code
+  - BankAccountCode
+  - Name
+  - CurrencyCode
+  - SortCode
+  - SwiftCode
+  - OnlineUserID
+  - RowVersionNumber
+  relationships: []
+- name: Tax
+  abstract: false
+  inheritance_chain:
+  - Tax
+  - InfoBase
+  - ObjectBase
+  own_field_count: 22
+  total_field_count: 26
+  identity_fields:
+  - ID
+  - Code
+  - RowVersionNumber
+  - TaxTypeId
+  - Is1099Code
+  relationships:
+  - kind: has_one
+    target: TaxChecker
+    via: Checker
+- name: CreditTerm
+  abstract: false
+  inheritance_chain:
+  - CreditTerm
+  - InfoBase
+  - ObjectBase
+  own_field_count: 3
+  total_field_count: 7
+  identity_fields:
+  - ID
+  - Code
+  - RowVersionNumber
+  relationships:
+  - kind: has_one
+    target: CreditTermChecker
+    via: Checker
+- name: PriceList
+  abstract: false
+  inheritance_chain:
+  - PriceList
+  - InfoBase
+  - ObjectBase
+  own_field_count: 5
+  total_field_count: 9
+  identity_fields:
+  - ID
+  - Code
+  - RowVersionNumber
+  - PriceListID
+  - AuthorUserID
+  relationships:
+  - kind: has_many
+    target: PriceListItem
+    via: Items
+- name: PriceListItem
+  abstract: false
+  inheritance_chain:
+  - PriceListItem
+  - InfoBase
+  - ObjectBase
+  own_field_count: 12
+  total_field_count: 16
+  identity_fields:
+  - ID
+  - Code
+  - RowVersionNumber
+  - PriceListItemID
+  - AccountID
+  - PriceListID
+  - AuthorUserID
+  - StockItemID
+  relationships:
+  - kind: belongs_to
+    target: Account
+    via: AccountID
+  - kind: belongs_to
+    target: PriceList
+    via: PriceListID
+  - kind: belongs_to
+    target: StockItem
+    via: StockItemID
+- name: ItemGroup
+  abstract: false
+  inheritance_chain:
+  - ItemGroup
+  - InfoBase
+  - ObjectBase
+  own_field_count: 0
+  total_field_count: 4
+  identity_fields:
+  - ID
+  - Code
+  - RowVersionNumber
+  relationships: []
+- name: BudgetHeader
+  abstract: false
+  inheritance_chain:
+  - BudgetHeader
+  own_field_count: 5
+  total_field_count: 5
+  identity_fields: []
+  relationships:
+  - kind: has_many
+    target: DataErrorDTO
+    via: ValidationErrors
+  - kind: has_many
+    target: BudgetEntry
+    via: Entries
+- name: BudgetEntry
+  abstract: false
+  inheritance_chain:
+  - BudgetEntry
+  own_field_count: 8
+  total_field_count: 8
+  identity_fields:
+  - GlAccountCode
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+  - kind: has_many
+    target: PeriodData
+    via: Data
+  - kind: has_many
+    target: DataErrorDTO
+    via: ValidationErrors
+- name: SalesReceipt
+  abstract: false
+  inheritance_chain:
+  - SalesReceipt
+  - ObjectBase
+  own_field_count: 10
+  total_field_count: 10
+  identity_fields:
+  - CustomerCode
+  - BankAccountCode
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Customer
+    via: CustomerCode
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: PurchasePayment
+  abstract: false
+  inheritance_chain:
+  - PurchasePayment
+  - ObjectBase
+  own_field_count: 10
+  total_field_count: 10
+  identity_fields:
+  - SupplierCode
+  - BankAccountCode
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Supplier
+    via: SupplierCode
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: DeliveryLine
+  abstract: false
+  inheritance_chain:
+  - DeliveryLine
+  - ObjectBase
+  own_field_count: 13
+  total_field_count: 13
+  identity_fields:
+  - DeliveryItemID
+  - OrderID
+  - OrderItemID
+  - StockItemID
+  - LocationID
+  - SublocationID
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Order
+    via: OrderID
+  - kind: belongs_to
+    target: StockItem
+    via: StockItemID
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: DeliveryRoute
+  abstract: false
+  inheritance_chain:
+  - DeliveryRoute
+  - InfoBase
+  - ObjectBase
+  own_field_count: 0
+  total_field_count: 4
+  identity_fields:
+  - ID
+  - Code
+  - RowVersionNumber
+  relationships: []
+- name: BatchSalesInvoice
+  abstract: false
+  inheritance_chain:
+  - BatchSalesInvoice
+  own_field_count: 7
+  total_field_count: 7
+  identity_fields:
+  - CustomerCode
+  - ExternalReference
+  relationships:
+  - kind: belongs_to
+    target: Customer
+    via: CustomerCode
+  - kind: has_many
+    target: BatchSalesInvoiceLine
+    via: Lines
+- name: BatchSalesInvoiceLine
+  abstract: false
+  inheritance_chain:
+  - BatchSalesInvoiceLine
+  own_field_count: 7
+  total_field_count: 7
+  identity_fields:
+  - GLAccountCode
+  - TaxCode
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Tax
+    via: TaxCode
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: BatchPurchasesInvoice
+  abstract: false
+  inheritance_chain:
+  - BatchPurchasesInvoice
+  own_field_count: 7
+  total_field_count: 7
+  identity_fields:
+  - SupplierCode
+  - ExternalReference
+  relationships:
+  - kind: belongs_to
+    target: Supplier
+    via: SupplierCode
+  - kind: has_many
+    target: BatchPurchasesInvoiceLine
+    via: Lines
+- name: BatchPurchasesInvoiceLine
+  abstract: false
+  inheritance_chain:
+  - BatchPurchasesInvoiceLine
+  own_field_count: 7
+  total_field_count: 7
+  identity_fields:
+  - GLAccountCode
+  - TaxCode
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Tax
+    via: TaxCode
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: BatchSalesCreditNote
+  abstract: false
+  inheritance_chain:
+  - BatchSalesCreditNote
+  own_field_count: 7
+  total_field_count: 7
+  identity_fields:
+  - CustomerCode
+  - ExternalReference
+  relationships:
+  - kind: belongs_to
+    target: Customer
+    via: CustomerCode
+  - kind: has_many
+    target: BatchSalesCreditNoteLine
+    via: Lines
+- name: BatchPurchasesDebitNote
+  abstract: false
+  inheritance_chain:
+  - BatchPurchasesDebitNote
+  own_field_count: 7
+  total_field_count: 7
+  identity_fields:
+  - SupplierCode
+  - ExternalReference
+  relationships:
+  - kind: belongs_to
+    target: Supplier
+    via: SupplierCode
+  - kind: has_many
+    target: BatchPurchasesDebitNoteLine
+    via: Lines
+- name: WSEntity
+  abstract: false
+  inheritance_chain:
+  - WSEntity
+  own_field_count: 3
+  total_field_count: 3
+  identity_fields:
+  - EntityID
+  relationships: []
+- name: WSCompanyInformation
+  abstract: false
+  inheritance_chain:
+  - WSCompanyInformation
+  own_field_count: 12
+  total_field_count: 12
+  identity_fields:
+  - BaseCurrencyCode
+  relationships:
+  - kind: has_one
+    target: WSAddress
+    via: Address
+  - kind: has_one
+    target: WSContactInformation
+    via: ContactInformation
+  - kind: has_one
+    target: WSAutoNumberingSettings
+    via: AutoNumberingSettings
+  - kind: has_one
+    target: WSPrecisionSettings
+    via: PrecisionSettings
+  - kind: has_one
+    target: WSApprovalSettings
+    via: ApprovalSettings
+- name: WSAnalysisDimension
+  abstract: false
+  inheritance_chain:
+  - WSAnalysisDimension
+  own_field_count: 3
+  total_field_count: 3
+  identity_fields:
+  - Code
+  relationships:
+  - kind: has_many
+    target: WSAnalysisDimensionCode
+    via: DimensionCodes
+- name: WSAnalysisDimensionCode
+  abstract: false
+  inheritance_chain:
+  - WSAnalysisDimensionCode
+  own_field_count: 2
+  total_field_count: 2
+  identity_fields:
+  - Code
+  relationships: []
+- name: WSBankTransfer
+  abstract: false
+  inheritance_chain:
+  - WSBankTransfer
+  own_field_count: 11
+  total_field_count: 11
+  identity_fields:
+  - ExternalReference
+  - ToBankAccountCode
+  - FromBankAccountCode
+  - DepartmentID
+  relationships:
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: WSChartOfAccountLine
+  abstract: false
+  inheritance_chain:
+  - WSChartOfAccountLine
+  own_field_count: 17
+  total_field_count: 17
+  identity_fields:
+  - Code
+  - DefaultTaxID
+  - GLCategoryID
+  - GLSubCategoryID
+  - DepartmentID
+  - GLCategoryTypeID
+  - CurrencyCode
+  - GLGroupID
+  relationships:
+  - kind: belongs_to
+    target: Department
+    via: DepartmentID
+- name: WSCurrency
+  abstract: false
+  inheritance_chain:
+  - WSCurrency
+  own_field_count: 8
+  total_field_count: 8
+  identity_fields:
+  - CurrencyID
+  - CurrencyCode
+  relationships: []
+- name: WSDocument
+  abstract: false
+  inheritance_chain:
+  - WSDocument
+  own_field_count: 2
+  total_field_count: 2
+  identity_fields: []
+  relationships:
+  - kind: has_one
+    target: WSDocumentHeader
+    via: Header
+  - kind: has_one
+    target: WSDocumentContent
+    via: Content
+- name: WSNote
+  abstract: false
+  inheritance_chain:
+  - WSNote
+  own_field_count: 4
+  total_field_count: 4
+  identity_fields:
+  - NoteID
+  - MasterID
+  relationships: []
+- name: NoteDTO
+  abstract: false
+  inheritance_chain:
+  - NoteDTO
+  own_field_count: 3
+  total_field_count: 3
+  identity_fields:
+  - UserID
+  relationships: []
+- name: WSAccountContact
+  abstract: false
+  inheritance_chain:
+  - WSAccountContact
+  own_field_count: 9
+  total_field_count: 9
+  identity_fields:
+  - AccountCode
+  - AuthorUserID
+  relationships:
+  - kind: belongs_to
+    target: Account
+    via: AccountCode
+- name: WSAddress
+  abstract: false
+  inheritance_chain:
+  - WSAddress
+  own_field_count: 6
+  total_field_count: 6
+  identity_fields:
+  - PostZipCode
+  relationships: []
+inheritance_note: 'Several headline entities are pure extensions with no own fields — Customer and Supplier both
+  extend Account, and CreditNote extends InvoiceBase — so the useful field set is the resolved chain, which is why
+  inheritance_chain and total_field_count are recorded alongside own_field_count. This is the single most important
+  shape fact about the AccountsIQ model: a customer and a supplier are the same Account structure differentiated
+  by ledger, not two separate schemas.'

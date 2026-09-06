@@ -1,0 +1,122 @@
+generated: '2026-09-06'
+method: searched
+source: https://accountsiq.github.io/API-Wiki/guidelines.html
+docs:
+- https://accountsiq.github.io/API-Wiki/guidelines.html
+- https://accountsiq.github.io/API-Wiki/postman-collection.html
+package_count: 0
+official_sdk_count: 0
+note: >-
+  AccountsIQ publishes no client libraries, and says so in its own words: "Currently, we do not
+  offer client libraries." This is a stated position, not a gap we failed to find, which is why
+  the count is an affirmative zero. It is also idiomatic for the technology — the documented
+  integration path for a SOAP 1.1 service is to generate a typed proxy from the WSDL at build
+  time, so the contract fills the role a package would fill in a REST API. What AccountsIQ
+  offers in place of packages is a Postman collection per region and version, and a sample C#
+  project available on request.
+registries_searched:
+- registry: npm
+  query: accountsiq
+  endpoint: https://registry.npmjs.org/-/v1/search?text=accountsiq
+  results: 0
+- registry: pypi
+  queries:
+  - accountsiq
+  - accounts-iq
+  - aiq-api
+  results: 0
+  note: All three project lookups returned HTTP 404.
+- registry: nuget
+  query: accountsiq
+  endpoint: https://azuresearch-usnc.nuget.org/query?q=accountsiq
+  results: 0
+  note: >-
+    The most significant of the searches, because the API's first-class documented clients are
+    C# and VB.NET. AccountsIQ ships no NuGet package.
+- registry: rubygems
+  query: accountsiq
+  results: 0
+- registry: packagist
+  query: accountsiq
+  results: 0
+  note: >-
+    No PHP package either; the docs instead tell PHP developers to run wsdl2php against the
+    WSDL themselves.
+- registry: github
+  query: org:accountsIQ
+  results: 1
+  note: >-
+    The AccountsIQ GitHub organisation contains exactly one public repository, API-Wiki, which
+    is documentation and Postman collections rather than a client library.
+packages: []
+generated_clients:
+  note: >-
+    The provider's documented substitute for an SDK. These are not published artifacts; they
+    are toolchain instructions.
+  toolchains:
+  - language: C#
+    method: Add Web Reference / wsdl.exe against the WSDL
+    version: null
+    published: null
+  - language: VB.NET
+    method: Add Web Reference against the WSDL
+    version: null
+    published: null
+  - language: PHP
+    method: wsdl2php against the WSDL, pointed at the staging environment
+    version: null
+    published: null
+  - language: Java
+    method: Language-independent SOAP tooling (provider states Java is supported)
+    version: null
+    published: null
+  source: https://accountsiq.github.io/API-Wiki/specifications.html
+first_party_collections:
+  registry: github-raw
+  note: >-
+    Eight first-party Postman collections, one per region and version, published in the
+    provider's own repository. These are versioned by the API version rather than by a package
+    version, so version and published are null with that reason recorded rather than omitted.
+  collections:
+  - name: AccountsIQ-EU1-2_0.postman_collection.json
+    api_version: '2.0'
+    region: eu1
+    version: null
+    published: null
+  - name: AccountsIQ-EU2-2_0.postman_collection.json
+    api_version: '2.0'
+    region: eu2
+    version: null
+    published: null
+  - name: AccountsIQ-UK1-2_0.postman_collection.json
+    api_version: '2.0'
+    region: uk1
+    version: null
+    published: null
+  - name: AccountsIQ-US1-2_0.postman_collection.json
+    api_version: '2.0'
+    region: us1
+    version: null
+    published: null
+  - name: AccountsIQ-EU1-1_1.postman_collection.json
+    api_version: '1.1'
+    region: eu1
+    version: null
+    published: null
+  - name: AccountsIQ-EU2-1_1.postman_collection.json
+    api_version: '1.1'
+    region: eu2
+    version: null
+    published: null
+  - name: AccountsIQ-UK1-1_1.postman_collection.json
+    api_version: '1.1'
+    region: uk1
+    version: null
+    published: null
+  - name: AccountsIQ-US1-1_1.postman_collection.json
+    api_version: '1.1'
+    region: us1
+    version: null
+    published: null
+  location: https://github.com/accountsIQ/API-Wiki/tree/gh-pages/assets/postman-collection
+  docs: https://accountsiq.github.io/API-Wiki/postman-collection.html

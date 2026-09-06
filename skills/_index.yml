@@ -1,0 +1,89 @@
+generated: '2026-09-06'
+method: generated
+source: wsdl/accountsiq-integration-2-0.wsdl plus the AccountsIQ API Wiki (guidelines, troubleshooting, authentication
+  pages)
+note: Four packaged Agent Skills covering the marquee AccountsIQ integration flows. AccountsIQ publishes no
+  skills of its own and no AGENTS.md, so these are generated. Every operation named in every skill was grepped
+  from the WSDL and verified to exist - see the verification note below. The behavioural rules (no idempotency,
+  errors on HTTP 200, no webhooks, region selection, upper-case codes, xsi:nil for server-assigned fields)
+  come from the provider docs and the contract, not from assumption.
+verification: All operations across all skills were checked against the 219 operations declared in wsdl/accountsiq-integration-2-0.wsdl.
+  Login appears only in the onboarding skill, where it is correctly described as the Integration 1.1 legacy
+  operation, and is verified against wsdl/accountsiq-integration-1-1.wsdl.
+skill_count: 4
+skills:
+- file: accountsiq-incremental-sync.md
+  name: accountsiq-incremental-sync
+  description: Keep an external system in step with an AccountsIQ entity by polling for created and modified
+    transactions, since AccountsIQ publishes no webhooks.
+  api: accountsiq:integration-2-0
+  operation_count: 12
+  operations:
+  - TokenGet
+  - TokenRefresh
+  - GetEntitiesByToken
+  - GetTransactionChangesBetween
+  - GetAccountsWithTransactionsCreatedBetween
+  - GetTransactionsCreatedByAccountBetween
+  - GetTransactionsModifiedBy
+  - GetCountTransactionsBy
+  - GetTransactionsBy
+  - GetAllocationsForTransactionsCreatedBetween
+  - GetAllocationsBetweenWithCreationDatePaged
+  - GetPeriodList
+- file: accountsiq-onboard-integration.md
+  name: accountsiq-onboard-integration
+  description: Get from zero to a working AccountsIQ integration - keys, staging, region selection, WSDL proxy
+    generation and the move to production.
+  api: accountsiq:integration-2-0
+  operation_count: 6
+  operations:
+  - TokenGet
+  - TokenRefresh
+  - GetEntitiesByToken
+  - GetCompanyInformation
+  - GetCurrencies
+  - Login
+- file: accountsiq-post-sales-invoice.md
+  name: accountsiq-post-sales-invoice
+  description: Create and post a sales invoice into an AccountsIQ entity over the Integration 2.0 SOAP API,
+    safely and without creating duplicates.
+  api: accountsiq:integration-2-0
+  operation_count: 11
+  operations:
+  - TokenGet
+  - TokenRefresh
+  - GetEntitiesByToken
+  - GetInvoicesByExternalReference
+  - GetNewSalesInvoice
+  - GetCustomer
+  - GetTaxCodeList
+  - SaveInvoiceGetBackInvoiceID
+  - PostInvoiceGetBackTransactionID
+  - GetInvoicePDFByTransactionID
+  - CancelInvoice
+- file: accountsiq-reconcile-payments.md
+  name: accountsiq-reconcile-payments
+  description: Record payments and receipts in AccountsIQ and allocate them against open invoices, including
+    how to reverse an allocation.
+  api: accountsiq:integration-2-0
+  operation_count: 18
+  operations:
+  - TokenGet
+  - GetBankList
+  - GetBankAccountBalance
+  - GetCustomer
+  - GetSupplier
+  - GetInvoicesByCustomerCode
+  - GetInvoicesBySupplierCode
+  - GetAccountBalanceInformation
+  - SaveSalesReceiptGetBackTransactionID
+  - SavePurchasePaymentGetBackTransactionID
+  - SaveSundryReceiptPaymentsGetBackTransactionIDs
+  - AllocateTransactions
+  - AllocateTransactionsWithDiscount
+  - GetAllocationsByTransactionId
+  - UnallocateTransactions
+  - PostPayAndAllocateSalesInvoice
+  - DisputeTransactions
+  - PostBankTransfer

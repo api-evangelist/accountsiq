@@ -64,5 +64,20 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Accountsiq is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://equityzen.com/company/accountsiq
+AccountsIQ is a cloud accounting and financial management platform for mid-sized businesses and multi-entity group structures, headquartered in Dublin, Ireland. The platform covers the general ledger, accounts receivable and payable, banking and bank-feed reconciliation, budgeting, cashflow forecasting, fixed assets, stock, sales and purchase order processing, multi-currency consolidation and business intelligence. Its public integration surface is the AIQ SOAP API, published as two WSDL contracts — Integration 1.1 (session-token Login authentication) and Integration 2.0 (OAuth 2.0 client-credentials via TokenGet/TokenRefresh) — served from four regional deployments (eu1, eu2, uk1, us1) and documented in the openly published AccountsIQ API Wiki, with first-party Postman collections for every region and version.
+
+## APIs
+
+- **AccountsIQ Integration API 2.0** — SOAP 1.1, 219 operations, OAuth 2.0 client credentials.
+  Contract: `wsdl/accountsiq-integration-2-0.wsdl`
+- **AccountsIQ Integration API 1.1** — SOAP 1.1, 217 operations, `Login` session token (legacy, still served).
+  Contract: `wsdl/accountsiq-integration-1-1.wsdl`
+
+## Links
+
+- API Wiki (developer documentation): https://accountsiq.github.io/API-Wiki/
+- Specifications / WSDL locations: https://accountsiq.github.io/API-Wiki/specifications.html
+- Postman collections: https://accountsiq.github.io/API-Wiki/postman-collection.html
+- Trust centre: https://trust.accountsiq.com/
+- Status: https://status.accountsiq.com/
+- Website: https://www.accountsiq.com/

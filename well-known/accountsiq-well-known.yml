@@ -1,0 +1,296 @@
+generated: '2026-09-06'
+method: probed
+source: Direct anonymous HTTPS probes of each named path on every host in the record, 2026-09-06.
+summary:
+  hosts_probed: 10
+  paths_probed_per_host: 7
+  total_probes: 70
+  documents_served: 0
+note: 'No .well-known document is served on any AccountsIQ host. Nine of the ten hosts return a clean 404 for
+  all seven paths. The tenth, trust.accountsiq.com, returns HTTP 200 for every path because Vanta serves a
+  single-page-app catch-all: each response is the same HTML shell, so none of them is a document. No WellKnown,
+  SecurityTxt or AgentCard pointer is emitted in apis.yml, because a pointer would assert that AccountsIQ publishes
+  a surface it does not publish. This file records a measured absence, which is valid data.'
+hosts:
+- host: www.accountsiq.com
+  role: registrable domain / marketing site
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: accountsiq.com
+  role: registrable domain / marketing site
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: eu1.accountsiq.com
+  role: API host (regional SOAP deployment)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: eu2.accountsiq.com
+  role: API host (regional SOAP deployment)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: uk1.accountsiq.com
+  role: API host (regional SOAP deployment)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: us1.accountsiq.com
+  role: API host (regional SOAP deployment)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: help.accountsiq.com
+  role: help centre
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: accountsiq.github.io
+  role: documentation host (API Wiki, GitHub Pages)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: status.accountsiq.com
+  role: status page
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 404
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    file: null
+  - path: /.well-known/api-catalog
+    status: 404
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    file: null
+- host: trust.accountsiq.com
+  role: trust centre (Vanta-hosted)
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: null
+    served_document: false
+    note: HTTP 200 but the body is the Vanta single-page-app HTML shell (<!doctype html>), identical for every
+      path including nonsense ones. This is a catch-all route, NOT a served document, and is recorded as a
+      miss.
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: null
+    served_document: false
+    note: HTTP 200 but the body is the Vanta single-page-app HTML shell (<!doctype html>), identical for every
+      path including nonsense ones. This is a catch-all route, NOT a served document, and is recorded as a
+      miss.
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: null
+    served_document: false
+    note: HTTP 200 but the body is the Vanta single-page-app HTML shell (<!doctype html>), identical for every
+      path including nonsense ones. This is a catch-all route, NOT a served document, and is recorded as a
+      miss.
+  - path: /.well-known/api-catalog
+    status: 200
+    file: null
+    served_document: false
+    note: HTTP 200 but the body is the Vanta single-page-app HTML shell (<!doctype html>), identical for every
+      path including nonsense ones. This is a catch-all route, NOT a served document, and is recorded as a
+      miss.
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    file: null
+    served_document: false
+    note: HTTP 200 but the body is the Vanta single-page-app HTML shell (<!doctype html>), identical for every
+      path including nonsense ones. This is a catch-all route, NOT a served document, and is recorded as a
+      miss.
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: null
+    served_document: false
+    note: HTTP 200 but the body is the Vanta single-page-app HTML shell (<!doctype html>), identical for every
+      path including nonsense ones. This is a catch-all route, NOT a served document, and is recorded as a
+      miss.
+  - path: /.well-known/agent.json
+    status: 200
+    file: null
+    served_document: false
+    note: HTTP 200 but the body is the Vanta single-page-app HTML shell (<!doctype html>), identical for every
+      path including nonsense ones. This is a catch-all route, NOT a served document, and is recorded as a
+      miss.
+agent_card:
+  found: false
+  paths_probed:
+  - /.well-known/agent-card.json
+  - /.well-known/agent.json
+  note: Probed on all ten hosts. The only 200s came from the Vanta SPA catch-all and were HTML, which fails
+    the AgentCard shape test (a JSON object carrying name/url/version/protocolVersion/capabilities/skills).
+    No a2a/ artifact is written and no AgentCard pointer is emitted, per the search-only rule for agent cards.
+oauth_metadata:
+  found: false
+  note: 'Worth noting explicitly because AccountsIQ does implement an OAuth 2.0 client-credentials grant on
+    Integration 2.0. It publishes no RFC 8414 authorization-server metadata and no RFC 9728 protected-resource
+    metadata, so the grant is not machine-discoverable: a client must read the human documentation to learn
+    that TokenGet exists. See authentication/accountsiq-authentication.yml.'
