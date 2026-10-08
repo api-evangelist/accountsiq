@@ -94,3 +94,30 @@ api_licensing:
     royalty-free and fully paid up, but non-transferable and non-sublicensable, and keys may
     not be shared.
   source: https://accountsiq.github.io/API-Wiki/termsofuse.html
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Core
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Growth
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Scale
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - month
