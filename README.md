@@ -1,4 +1,4 @@
-# Accountsiq
+# AccountsIQ
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,18 +66,114 @@
 
 AccountsIQ is a cloud accounting and financial management platform for mid-sized businesses and multi-entity group structures, headquartered in Dublin, Ireland. The platform covers the general ledger, accounts receivable and payable, banking and bank-feed reconciliation, budgeting, cashflow forecasting, fixed assets, stock, sales and purchase order processing, multi-currency consolidation and business intelligence. Its public integration surface is the AIQ SOAP API, published as two WSDL contracts — Integration 1.1 (session-token Login authentication) and Integration 2.0 (OAuth 2.0 client-credentials via TokenGet/TokenRefresh) — served from four regional deployments (eu1, eu2, uk1, us1) and documented in the openly published AccountsIQ API Wiki, with first-party Postman collections for every region and version.
 
-## APIs
+**Areas:** Company · Accounting · Financial Management · Cloud Accounting · ERP · Consolidation · General Ledger · Business Intelligence · SOAP · Ireland
 
-- **AccountsIQ Integration API 2.0** — SOAP 1.1, 219 operations, OAuth 2.0 client credentials.
-  Contract: `wsdl/accountsiq-integration-2-0.wsdl`
-- **AccountsIQ Integration API 1.1** — SOAP 1.1, 217 operations, `Login` session token (legacy, still served).
-  Contract: `wsdl/accountsiq-integration-1-1.wsdl`
+## AccountsIQ on APIs.io
 
-## Links
+Everything profiled for AccountsIQ is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/accountsiq/](https://apis.io/providers/accountsiq/)** — or go straight to one of the APIs or properties below.
 
-- API Wiki (developer documentation): https://accountsiq.github.io/API-Wiki/
-- Specifications / WSDL locations: https://accountsiq.github.io/API-Wiki/specifications.html
-- Postman collections: https://accountsiq.github.io/API-Wiki/postman-collection.html
-- Trust centre: https://trust.accountsiq.com/
-- Status: https://status.accountsiq.com/
-- Website: https://www.accountsiq.com/
+### APIs (2)
+
+- [AccountsIQ Integration API 2.0](https://apis.io/apis/accountsiq/integration-2-0/) — The current AIQ SOAP 1.1 integration web service. 219 operations covering customers, suppliers, stock items, sales and purchase invoices, credit and debit…
+- [AccountsIQ Integration API 1.1](https://apis.io/apis/accountsiq/integration-1-1/) — The legacy AIQ SOAP 1.1 integration web service, still published and supported alongside 2.0. 217 operations over the same accounting surface, authenticated…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [accountsiq](https://apis.io/servers/accountsiq/accountsiq/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Accountsiq Authentication](https://apis.io/security/accountsiq/accountsiq-authentication/)
+- [Accountsiq Domain Security](https://apis.io/security/accountsiq/accountsiq-domain-security/)
+- [Accountsiq Trust Center](https://apis.io/security/accountsiq/accountsiq-trust-center/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Accountsiq Plans Pricing](https://apis.io/plans/accountsiq/accountsiq-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Accountsiq Rate Limits](https://apis.io/rate-limits/accountsiq/accountsiq-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.accountsiq.com/)
+- [Documentation](https://accountsiq.github.io/API-Wiki/)
+- [Getting started](https://accountsiq.github.io/API-Wiki/integration.html)
+- [API reference](https://accountsiq.github.io/API-Wiki/specifications.html)
+- [Pricing](https://www.accountsiq.com/pricing)
+- [Sign up](https://www.accountsiq.com/contact/)
+- [Support](https://www.accountsiq.com/success/support/)
+- [Blog](https://www.accountsiq.com/resource/blog)
+- [Trust centre](https://trust.accountsiq.com/)
+- [Terms of service](https://www.accountsiq.com/legal/terms-conditions)
+- [Privacy policy](https://www.accountsiq.com/legal/privacy-statement)
+- [GitHub](https://github.com/accountsIQ)
+- [Status](https://status.accountsiq.com/)
+
+## API Evangelist rating
+
+**Kin Score 54.2** — developing · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 30.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 18.4 |
+| Developer ergonomics | 70.8 |
+| Access clarity | 92.1 |
+
+**Agent readiness 20.9** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | documented (partial credit) |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/accountsiq/](https://apis.io/providers/accountsiq/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for AccountsIQ: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/accountsiq/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
