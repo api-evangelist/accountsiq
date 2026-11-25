@@ -91,21 +91,28 @@ Model Context Protocol servers that expose the API to agents.
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [Accountsiq Authentication](https://apis.io/security/accountsiq/accountsiq-authentication/)
-- [Accountsiq Domain Security](https://apis.io/security/accountsiq/accountsiq-domain-security/)
-- [Accountsiq Trust Center](https://apis.io/security/accountsiq/accountsiq-trust-center/)
+- [AccountsIQ Authentication](https://apis.io/security/accountsiq/accountsiq-authentication/)
+- [AccountsIQ Domain Security](https://apis.io/security/accountsiq/accountsiq-domain-security/)
+- [AccountsIQ Trust Center](https://apis.io/security/accountsiq/accountsiq-trust-center/)
 
-#### Plans and pricing (1)
+#### Plans and pricing (2)
 
 Published plans, tiers and prices.
 
-- [Accountsiq Plans Pricing](https://apis.io/plans/accountsiq/accountsiq-plans-pricing/)
+- [AccountsIQ Plans Pricing](https://apis.io/plans/accountsiq/accountsiq-plans-pricing/)
+- [AccountsIQ Price Estimates](https://apis.io/plans/accountsiq/accountsiq-price-estimates/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [Accountsiq Rate Limits](https://apis.io/rate-limits/accountsiq/accountsiq-rate-limits/)
+- [AccountsIQ Rate Limits](https://apis.io/rate-limits/accountsiq/accountsiq-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [AccountsIQ Finops](https://apis.io/finops/accountsiq/accountsiq-finops/)
 
 ## Where to find this API
 
@@ -127,18 +134,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 54.2** — developing · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 54.2** — developing · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
 | Discoverability | 73.2 |
 | Contract quality | 30.5 |
 | Contract governance | 18.2 |
-| Operational transparency | 18.4 |
+| Operational transparency | 19.0 |
 | Developer ergonomics | 70.8 |
-| Access clarity | 92.1 |
+| Access clarity | 95.7 |
 
-**Agent readiness 20.9** — agent-aware
+**Agent readiness 20.4** — agent-aware
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -163,8 +170,12 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | na |
 | Operation Distinctiveness | na |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
-**Regulatory alignment 29.4** — Horizontal (data, software, accessibility, platform)
+**Regulatory alignment 23.5** — Horizontal (data, software, accessibility, platform)
 
 The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/accountsiq/](https://apis.io/providers/accountsiq/).
 
